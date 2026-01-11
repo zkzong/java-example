@@ -185,6 +185,7 @@ public class ListTest {
     /**
      * initialCapacity
      * List设置初始化大小
+     * java 8必须设置，否则性能相差很大，java 17设置与否对性能影响不大
      */
     @Test
     public void initialCapacity() {
