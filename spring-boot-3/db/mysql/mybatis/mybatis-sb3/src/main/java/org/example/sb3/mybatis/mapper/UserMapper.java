@@ -32,4 +32,16 @@ public interface UserMapper {
 
     int updateBatch(List<User> userList);
 
+    /**
+     * 获取总记录数
+     */
+    long count();
+
+    /**
+     * 分页查询
+     * @param offset 偏移量
+     * @param limit 每页记录数
+     */
+    List<User> selectByPage(@Param("offset") int offset, @Param("limit") int limit);
+
 }

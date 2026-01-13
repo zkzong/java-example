@@ -119,4 +119,15 @@
             #{user.id,jdbcType=BIGINT}
         </foreach>
     </update>
+
+    <select id="count" resultType="long">
+        select count(*) from t_user
+    </select>
+
+    <select id="selectByPage" resultMap="resultMap">
+        select id, user_name, age, create_time, update_time
+        from t_user
+        limit #{offset}, #{limit}
+    </select>
+
 </mapper>
