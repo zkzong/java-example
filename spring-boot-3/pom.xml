@@ -29,6 +29,7 @@
         <module>upload</module>
         <module>sentinel</module>
         <module>seata-demo</module>
+        <module>knife4j</module>
     </modules>
 
     <properties>
