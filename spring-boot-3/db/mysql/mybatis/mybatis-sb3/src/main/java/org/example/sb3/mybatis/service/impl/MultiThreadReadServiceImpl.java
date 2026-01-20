@@ -13,7 +13,9 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * 多线程读取数据库服务实现 - 每个线程读取不同记录
+ * 多线程读取数据库服务实现 - 使用ID范围分片（性能优化）
+ *
+ * @author Claude
  */
 @Service
 public class MultiThreadReadServiceImpl implements MultiThreadReadService {
@@ -32,22 +34,28 @@ public class MultiThreadReadServiceImpl implements MultiThreadReadService {
     }
 
     /**
-     * 使用指定数量的线程并发读取t_user表数据 - 每个线程读取不同记录
+     * 使用指定数量的线程并发读取t_user表数据
+     * 使用ID范围分片，避免大offset性能问题
      */
     @Override
     public Map<String, Object> readWithMultiThreads(int threadCount) {
         long startTime = System.currentTimeMillis();
 
-        // 1. 获取总记录数
-        long totalCount = userMapper.count();
-        log.info("表t_user总记录数: {}", totalCount);
+        // 1. 获取ID范围（使用主键索引，性能高）
+        Long minId = userMapper.selectMinId();
+        Long maxId = userMapper.selectMaxId();
 
-        if (totalCount == 0) {
+        if (minId == null || maxId == null) {
+            log.warn("表中没有数据");
             return createEmptyResult(threadCount, 0);
         }
 
-        // 2. 计算每个线程应该读取的记录数
-        int perThreadSize = (int) ((totalCount + threadCount - 1) / threadCount); // 向上取整
+        long totalCount = userMapper.count();
+        log.info("表t_user: 总记录数={}, ID范围=[{}, {}]", totalCount, minId, maxId);
+
+        // 2. 计算每个线程负责的ID范围
+        long idRange = maxId - minId + 1;
+        long rangePerThread = (idRange + threadCount - 1) / threadCount; // 向上取整
 
         // 创建线程池
         ThreadPoolExecutor executor = new ThreadPoolExecutor(
@@ -75,21 +83,21 @@ public class MultiThreadReadServiceImpl implements MultiThreadReadService {
         AtomicInteger failCount = new AtomicInteger(0);
         AtomicInteger actualTotalRecords = new AtomicInteger(0);
 
-        // 3. 提交任务到线程池，每个线程读取不同的数据段
+        // 3. 提交任务，每个线程负责一个ID范围
         for (int i = 0; i < threadCount; i++) {
             final int threadIndex = i + 1;
-            final int offset = i * perThreadSize;
-            final int limit = perThreadSize;
+            final long threadMinId = minId + i * rangePerThread;
+            final long threadMaxId = Math.min(threadMinId + rangePerThread - 1, maxId);
 
-            // 如果offset已经超过总记录数，就不创建任务了
-            if (offset >= totalCount) {
+            // 如果已经超过最大ID，就不创建任务了
+            if (threadMinId > maxId) {
                 break;
             }
 
             Future<List<User>> future = executor.submit(() -> {
                 try {
-                    log.info("线程-{} 开始读取数据: offset={}, limit={}", threadIndex, offset, limit);
-                    List<User> users = userMapper.selectByPage(offset, limit);
+                    log.info("线程-{} 开始读取: ID范围=[{}, {}]", threadIndex, threadMinId, threadMaxId);
+                    List<User> users = userMapper.selectByIdRange(threadMinId, threadMaxId);
                     successCount.incrementAndGet();
                     actualTotalRecords.addAndGet(users.size());
                     log.info("线程-{} 读取完成，获取 {} 条记录", threadIndex, users.size());
@@ -131,9 +139,10 @@ public class MultiThreadReadServiceImpl implements MultiThreadReadService {
         // 构建返回结果
         Map<String, Object> result = new HashMap<>();
         result.put("totalCount", totalCount);
+        result.put("idRange", String.format("[%d, %d]", minId, maxId));
         result.put("threadCount", threadCount);
         result.put("activeThreadCount", futures.size());
-        result.put("perThreadSize", perThreadSize);
+        result.put("rangePerThread", rangePerThread);
         result.put("successCount", successCount.get());
         result.put("failCount", failCount.get());
         result.put("totalRecords", actualTotalRecords.get());
@@ -142,8 +151,8 @@ public class MultiThreadReadServiceImpl implements MultiThreadReadService {
         result.put("durationSeconds", String.format("%.2f", duration / 1000.0));
         result.put("timestamp", new Date());
 
-        log.info("多线程分片读取完成: 总记录数={}, 线程数={}, 成功={}, 失败={}, 耗时={}ms",
-                totalCount, threadCount, successCount.get(), failCount.get(), duration);
+        log.info("多线程ID范围分片读取完成: 总记录数={}, ID范围=[{}, {}], 线程数={}, 成功={}, 失败={}, 耗时={}ms",
+                totalCount, minId, maxId, threadCount, successCount.get(), failCount.get(), duration);
 
         return result;
     }
@@ -160,36 +169,38 @@ public class MultiThreadReadServiceImpl implements MultiThreadReadService {
      * 使用指定数量的线程并发读取，返回所有线程读取的结果列表
      */
     private List<User> readUsersWithMultiThreads(int threadCount) {
-        // 1. 获取总记录数
-        long totalCount = userMapper.count();
-        if (totalCount == 0) {
+        // 1. 获取ID范围
+        Long minId = userMapper.selectMinId();
+        Long maxId = userMapper.selectMaxId();
+
+        if (minId == null || maxId == null) {
             return Collections.emptyList();
         }
 
-        // 2. 计算每个线程应该读取的记录数
-        int perThreadSize = (int) ((totalCount + threadCount - 1) / threadCount);
+        // 2. 计算每个线程负责的ID范围
+        long idRange = maxId - minId + 1;
+        long rangePerThread = (idRange + threadCount - 1) / threadCount;
 
         ExecutorService executor = Executors.newFixedThreadPool(threadCount);
 
         try {
             List<Future<List<User>>> futures = new ArrayList<>();
 
-            // 3. 提交任务，每个线程读取不同的数据段
+            // 3. 提交任务，每个线程负责一个ID范围
             for (int i = 0; i < threadCount; i++) {
-                final int offset = i * perThreadSize;
+                final long threadMinId = minId + i * rangePerThread;
+                final long threadMaxId = Math.min(threadMinId + rangePerThread - 1, maxId);
+                final int threadIndex = i + 1;
 
-                // 如果offset已经超过总记录数，就不创建任务了
-                if (offset >= totalCount) {
+                // 如果已经超过最大ID，就不创建任务了
+                if (threadMinId > maxId) {
                     break;
                 }
 
-                final int limit = perThreadSize;
-                final int threadIndex = i + 1;
-
                 Future<List<User>> future = executor.submit(() -> {
                     try {
-                        log.info("线程-{} 读取: offset={}, limit={}", threadIndex, offset, limit);
-                        return userMapper.selectByPage(offset, limit);
+                        log.info("线程-{} 读取: ID范围=[{}, {}]", threadIndex, threadMinId, threadMaxId);
+                        return userMapper.selectByIdRange(threadMinId, threadMaxId);
                     } catch (Exception e) {
                         log.error("线程-{} 读取失败: {}", threadIndex, e.getMessage(), e);
                         return Collections.emptyList();
@@ -207,6 +218,9 @@ public class MultiThreadReadServiceImpl implements MultiThreadReadService {
                     log.error("获取任务结果失败: {}", e.getMessage(), e);
                 }
             }
+
+            // 按ID排序（因为多线程执行顺序不确定）
+            allUsers.sort(Comparator.comparing(User::getId));
 
             log.info("多线程读取完成: 共 {} 条记录", allUsers.size());
             return allUsers;

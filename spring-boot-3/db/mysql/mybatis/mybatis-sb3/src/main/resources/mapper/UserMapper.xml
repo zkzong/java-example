@@ -130,4 +130,19 @@
         limit #{offset}, #{limit}
     </select>
 
+    <select id="selectMinId" resultType="java.lang.Long">
+        select min(id) from t_user
+    </select>
+
+    <select id="selectMaxId" resultType="java.lang.Long">
+        select max(id) from t_user
+    </select>
+
+    <select id="selectByIdRange" resultMap="resultMap">
+        select id, user_name, age, create_time, update_time
+        from t_user
+        where id between #{minId} and #{maxId}
+        order by id
+    </select>
+
 </mapper>

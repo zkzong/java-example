@@ -44,4 +44,21 @@ public interface UserMapper {
      */
     List<User> selectByPage(@Param("offset") int offset, @Param("limit") int limit);
 
+    /**
+     * 获取最小ID
+     */
+    Long selectMinId();
+
+    /**
+     * 获取最大ID
+     */
+    Long selectMaxId();
+
+    /**
+     * 按ID范围查询（性能优化）
+     * @param minId 最小ID（包含）
+     * @param maxId 最大ID（包含）
+     */
+    List<User> selectByIdRange(@Param("minId") Long minId, @Param("maxId") Long maxId);
+
 }
