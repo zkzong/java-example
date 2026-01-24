@@ -1,6 +1,7 @@
 package io.code.lang3;
 
 import org.apache.commons.lang3.tuple.ImmutableTriple;
+import org.apache.commons.lang3.tuple.MutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
 import org.junit.jupiter.api.Test;
 
@@ -17,6 +18,12 @@ public class TripleTest {
         System.out.println(triple.getLeft());
         System.out.println(triple.getMiddle());
         System.out.println(triple.getRight());
+
+        Triple<Integer, String, Integer> mutableTriple = new MutableTriple<>(1, "io", 20);
+        System.out.println(mutableTriple);
+        System.out.println(mutableTriple.getLeft());
+        System.out.println(mutableTriple.getMiddle());
+        System.out.println(mutableTriple.getRight());
 
         Triple<Integer, String, Integer> immutableTriple = new ImmutableTriple<>(2, "code", 30);
         System.out.println(immutableTriple);

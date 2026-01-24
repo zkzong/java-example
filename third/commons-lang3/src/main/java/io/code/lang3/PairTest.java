@@ -1,6 +1,7 @@
 package io.code.lang3;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.Test;
 
@@ -18,6 +19,21 @@ public class PairTest {
         System.out.println(pair.getValue());
         System.out.println(pair.getLeft());
         System.out.println(pair.getRight());
+        try {
+            pair.setValue(10);
+            System.out.println(pair);
+        } catch (UnsupportedOperationException e) {
+            System.out.println(e);
+        }
+
+        Pair<String, Integer> mutablePair = new MutablePair<>("a", 1);
+        System.out.println(mutablePair);
+        System.out.println(mutablePair.getKey());
+        System.out.println(mutablePair.getValue());
+        System.out.println(mutablePair.getLeft());
+        System.out.println(mutablePair.getRight());
+        mutablePair.setValue(10);
+        System.out.println(mutablePair);
 
         Pair<String, Integer> immutablePair = new ImmutablePair<>("a", 1);
         System.out.println(immutablePair);
