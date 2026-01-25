@@ -20,5 +20,11 @@ public class TryWithResource {
             System.out.println(myResource);
             int i = 1 / 0;
         }
+
+        MyResource myResource = new MyResource();
+        try (myResource) {
+            System.out.println(myResource);
+            int i = 1 / 0;
+        }
     }
 }
