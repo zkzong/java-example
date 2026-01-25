@@ -1,7 +1,7 @@
-package org.example.sb3.mybatisplus.mapper;
+package io.code.sb3.mybatisplus.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.example.sb3.mybatisplus.domain.User;
+import io.code.sb3.mybatisplus.domain.User;
 
 /**
  * @author zongz

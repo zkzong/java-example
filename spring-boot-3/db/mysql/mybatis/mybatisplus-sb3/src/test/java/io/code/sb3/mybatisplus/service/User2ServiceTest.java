@@ -1,6 +1,6 @@
-package org.example.sb3.mybatisplus.service;
+package io.code.sb3.mybatisplus.service;
 
-import org.example.sb3.mybatisplus.domain.User;
+import io.code.sb3.mybatisplus.domain.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

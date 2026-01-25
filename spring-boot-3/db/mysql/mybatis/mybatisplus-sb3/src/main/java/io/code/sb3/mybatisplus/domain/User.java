@@ -1,4 +1,4 @@
-package org.example.sb3.mybatisplus.domain;
+package io.code.sb3.mybatisplus.domain;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;

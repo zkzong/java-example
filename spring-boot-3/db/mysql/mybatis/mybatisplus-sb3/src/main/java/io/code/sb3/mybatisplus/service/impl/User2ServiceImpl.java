@@ -1,10 +1,10 @@
-package org.example.sb3.mybatisplus.service.impl;
+package io.code.sb3.mybatisplus.service.impl;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.example.sb3.mybatisplus.domain.User;
-import org.example.sb3.mybatisplus.mapper.UserMapper;
-import org.example.sb3.mybatisplus.service.User2Service;
+import io.code.sb3.mybatisplus.domain.User;
+import io.code.sb3.mybatisplus.mapper.UserMapper;
+import io.code.sb3.mybatisplus.service.User2Service;
 import org.springframework.stereotype.Service;
 
 /**

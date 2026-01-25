@@ -1,7 +1,8 @@
-package org.example.sb3.mybatisplus.service;
+package io.code.sb3.mybatisplus.service;
 
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import org.example.sb3.mybatisplus.domain.User;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.code.sb3.mybatisplus.domain.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,12 @@ public class UserServiceTest {
     @Autowired
     private UserService userService;
 
+    @Test
+    public void page() {
+        Page page = userService.page(new Page(1, 1), null);
+        System.out.println(page);
+    }
+
     /**
      * 根据主键更新
      */
@@ -38,6 +45,7 @@ public class UserServiceTest {
      */
     @Test
     public void saveOrUpdate2() {
+        // 根据user_name更新数据
         UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("user_name", "java");
 
