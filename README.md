@@ -35,6 +35,8 @@ BindingResult：使用BindingResult类的getAllErrors()方法可以获取不符�
 
 ##### mybatis
 
+集成Spring Cache
+
 多线程读取数据库记录
 
 ###### mybatis-plus
