@@ -77,7 +77,7 @@ public class UserServiceImplTest {
         user.setUserName("John");
         user.setAge(25);
 
-        int result = userService.insertAndGetId(user);
+        User result = userService.insertAndGetId(user);
         System.out.println(result);
         System.out.println(user.getId());
     }

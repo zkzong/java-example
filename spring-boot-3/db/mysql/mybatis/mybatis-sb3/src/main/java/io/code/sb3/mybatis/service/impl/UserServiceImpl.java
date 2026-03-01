@@ -6,6 +6,7 @@ import io.code.sb3.mybatis.domain.User;
 import io.code.sb3.mybatis.mapper.UserMapper;
 import io.code.sb3.mybatis.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -50,8 +51,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int insertAndGetId(User user) {
-        return userMapper.insertAndGetId(user);
+    @CachePut(cacheNames = "user", key = "#user.id")
+    public User insertAndGetId(User user) {
+        userMapper.insertAndGetId(user);
+        return user;
     }
 
     @Override
