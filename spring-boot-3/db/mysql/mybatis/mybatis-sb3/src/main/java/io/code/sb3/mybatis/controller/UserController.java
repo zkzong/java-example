@@ -4,6 +4,7 @@ import io.code.sb3.mybatis.domain.User;
 import io.code.sb3.mybatis.req.NameInReq;
 import io.code.sb3.mybatis.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,9 +21,9 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/insert")
-    public String insert(@RequestBody User user) {
-        userService.insertAndGetId(user);
-        return "success";
+    public User insert(@RequestBody User user) {
+        User u = userService.insertAndGetId(user);
+        return u;
     }
 
     @PostMapping("/insertwithdate")

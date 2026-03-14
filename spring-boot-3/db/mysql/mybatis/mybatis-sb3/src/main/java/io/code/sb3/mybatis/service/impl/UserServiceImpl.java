@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @CachePut(cacheNames = "user", key = "#user.id")
+    @CachePut(cacheNames = "user", key = "#result.id")
     public User insertAndGetId(User user) {
         userMapper.insertAndGetId(user);
         return user;
