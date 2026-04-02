@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>flowable</module>
+        <module>camunda</module>
     </modules>
 
     <properties>
