@@ -14,6 +14,7 @@
     <modules>
         <module>flowable</module>
         <module>camunda</module>
+        <module>camunda-sb</module>
     </modules>
 
     <properties>
