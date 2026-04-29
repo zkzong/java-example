@@ -16,3 +16,38 @@ spring:
             - Path=/consumer/**
           filters:
             - StripPrefix=1
+        - id: nacos-provider
+          uri: lb://nacos-provider
+          predicates:
+            - Path=/provider/**
+          filters:
+            - StripPrefix=1
+        # Swagger UI 路由 - 聚合 consumer 服务的 API 文档
+        - id: nacos-consumer-api-docs
+          uri: lb://nacos-consumer
+          predicates:
+            - Path=/v3/api-docs/consumer/**
+          filters:
+            - RewritePath=/v3/api-docs/consumer/(?<segment>.*), /v3/api-docs/$\{segment}
+        # Swagger UI 路由 - 聚合 provider 服务的 API 文档
+        - id: nacos-provider-api-docs
+          uri: lb://nacos-provider
+          predicates:
+            - Path=/v3/api-docs/provider/**
+          filters:
+            - RewritePath=/v3/api-docs/provider/(?<segment>.*), /v3/api-docs/$\{segment}
+
+# SpringDoc 配置
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    # 配置聚合的 API 文档 URL - 通过 gateway 路由访问各服务的 api-docs
+    urls:
+      - name: nacos-consumer
+        url: /consumer/v3/api-docs
+      - name: nacos-provider
+        url: /provider/v3/api-docs
