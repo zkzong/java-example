@@ -23,19 +23,19 @@ spring:
           filters:
             - StripPrefix=1
         # Swagger UI 路由 - 聚合 consumer 服务的 API 文档
-        - id: nacos-consumer-api-docs
-          uri: lb://nacos-consumer
-          predicates:
-            - Path=/v3/api-docs/consumer/**
-          filters:
-            - RewritePath=/v3/api-docs/consumer/(?<segment>.*), /v3/api-docs/$\{segment}
-        # Swagger UI 路由 - 聚合 provider 服务的 API 文档
-        - id: nacos-provider-api-docs
-          uri: lb://nacos-provider
-          predicates:
-            - Path=/v3/api-docs/provider/**
-          filters:
-            - RewritePath=/v3/api-docs/provider/(?<segment>.*), /v3/api-docs/$\{segment}
+#        - id: nacos-consumer-api-docs
+#          uri: lb://nacos-consumer
+#          predicates:
+#            - Path=/v3/api-docs/consumer/**
+#          filters:
+#            - RewritePath=/v3/api-docs/consumer/(?<segment>.*), /v3/api-docs/$\{segment}
+#        # Swagger UI 路由 - 聚合 provider 服务的 API 文档
+#        - id: nacos-provider-api-docs
+#          uri: lb://nacos-provider
+#          predicates:
+#            - Path=/v3/api-docs/provider/**
+#          filters:
+#            - RewritePath=/v3/api-docs/provider/(?<segment>.*), /v3/api-docs/$\{segment}
 
 # SpringDoc 配置
 springdoc:
