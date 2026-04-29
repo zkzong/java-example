@@ -1,0 +1,18 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: nacos-gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.163.128:8848
+    gateway:
+      routes:
+        - id: nacos-consumer
+          uri: lb://nacos-consumer
+          predicates:
+            - Path=/consumer/**
+          filters:
+            - StripPrefix=1
