@@ -30,6 +30,7 @@
         <module>sentinel</module>
         <module>seata-demo</module>
         <module>knife4j</module>
+        <module>websocket</module>
     </modules>
 
     <properties>
