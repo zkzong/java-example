@@ -8,18 +8,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Component
-public class WebSocketTask implements CommandLineRunner {
-
-    private final WebSocketNettyServer webSocketNettyServer;
-
-    public WebSocketTask(WebSocketNettyServer webSocketNettyServer) {
-        this.webSocketNettyServer = webSocketNettyServer;
-    }
-
-    @Override
-    public void run(String... args) {
-        new Thread(() -> webSocketNettyServer.start(), "websocket-netty-server").start();
-    }
+public class WebSocketTask {
 
     @Scheduled(cron = "0/5 * * * * ?")
     public void sendMessageToClient() {
