@@ -1,6 +1,6 @@
-package io.code.sb3.mybatisplus.service;
+package io.code.sb3.dynamicdatasource.service;
 
-import io.code.sb3.mybatisplus.domain.User;
+import io.code.sb3.dynamicdatasource.domain.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,17 +15,17 @@ import java.util.List;
  */
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class User2ServiceTest {
+public class SlaveUserServiceTest {
 
     @Autowired
-    private User2Service user2Service;
+    private SlaveUserService slaveUserService;
 
     /**
      * list
      */
     @Test
     public void list() {
-        List<User> list = user2Service.list();
+        List<User> list = slaveUserService.list();
         System.out.println(list);
     }
 

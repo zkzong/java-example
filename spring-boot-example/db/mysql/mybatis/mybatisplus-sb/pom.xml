@@ -37,11 +37,6 @@
             <artifactId>pagehelper-spring-boot-starter</artifactId>
             <version>4.1.1</version>
         </dependency>
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>dynamic-datasource-spring-boot4-starter</artifactId>
-            <version>4.6.0</version>
-        </dependency>
 
         <dependency>
             <groupId>com.mysql</groupId>

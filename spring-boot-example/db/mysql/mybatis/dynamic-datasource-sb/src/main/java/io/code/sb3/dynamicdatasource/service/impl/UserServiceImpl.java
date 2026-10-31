@@ -1,0 +1,18 @@
+package io.code.sb3.dynamicdatasource.service.impl;
+
+import com.baomidou.mybatisplus.spring.service.impl.ServiceImpl;
+import io.code.sb3.dynamicdatasource.domain.User;
+import io.code.sb3.dynamicdatasource.mapper.UserMapper;
+import io.code.sb3.dynamicdatasource.service.UserService;
+import org.springframework.stereotype.Service;
+
+/**
+ * @author zongz
+ * @description 针对表【t_user】的数据库操作Service实现，使用默认 primary 数据源
+ * @createDate 2024-10-26 23:43:24
+ */
+@Service
+public class UserServiceImpl extends ServiceImpl<UserMapper, User>
+        implements UserService {
+
+}
