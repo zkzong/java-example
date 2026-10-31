@@ -1,4 +1,4 @@
-package org.example.xxljob;
+package org.example.xxljob.controller;
 
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
