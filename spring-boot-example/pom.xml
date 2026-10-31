@@ -17,7 +17,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>test-sb3</module>
+        <module>test-sb</module>
         <module>db</module>
         <module>nacos</module>
         <module>apollo</module>
