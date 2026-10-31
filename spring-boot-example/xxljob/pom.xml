@@ -5,21 +5,35 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.example</groupId>
-        <artifactId>spring-boot-3</artifactId>
+        <artifactId>spring-boot-example</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>db</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>mysql</module>
-        <module>elasticsearch</module>
-    </modules>
+    <artifactId>xxljob</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.xuxueli</groupId>
+            <artifactId>xxl-job-core</artifactId>
+            <version>2.2.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.8.18</version>
+        </dependency>
+    </dependencies>
 
 </project>
