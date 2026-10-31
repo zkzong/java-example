@@ -1,6 +1,6 @@
 package io.code.sb3.mybatisplus.service.impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.spring.service.impl.ServiceImpl;
 import io.code.sb3.mybatisplus.domain.User;
 import io.code.sb3.mybatisplus.mapper.UserMapper;
 import io.code.sb3.mybatisplus.service.UserService;

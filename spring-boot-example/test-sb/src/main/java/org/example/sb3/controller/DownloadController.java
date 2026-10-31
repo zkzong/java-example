@@ -3,7 +3,6 @@ package org.example.sb3.controller;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Base64Util;
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -24,6 +23,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
+import java.util.Base64;
 import java.util.Date;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -277,7 +277,7 @@ public class DownloadController {
             in = new FileInputStream(file);
             byte[] bytes = new byte[(int) file.length()];
             in.read(bytes);
-            base64 = Base64.encodeBase64String(bytes);
+            base64 = Base64.getEncoder().encodeToString(bytes);
 
         } catch (Exception e) {
             e.printStackTrace();

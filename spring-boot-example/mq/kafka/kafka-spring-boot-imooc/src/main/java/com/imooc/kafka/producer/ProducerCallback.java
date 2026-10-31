@@ -6,10 +6,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.lang.Nullable;
-import org.springframework.util.concurrent.ListenableFutureCallback;
+
+import java.util.function.BiConsumer;
 
 @Slf4j
-public class ProducerCallback implements ListenableFutureCallback<SendResult<String, MessageEntity>> {
+public class ProducerCallback implements BiConsumer<SendResult<String, MessageEntity>, Throwable> {
 
     private final long startTime;
     private final String key;
@@ -25,6 +26,14 @@ public class ProducerCallback implements ListenableFutureCallback<SendResult<Str
 
 
     @Override
+    public void accept(@Nullable SendResult<String, MessageEntity> result, Throwable ex) {
+        if (ex != null) {
+            onFailure(ex);
+        } else {
+            onSuccess(result);
+        }
+    }
+
     public void onSuccess(@Nullable SendResult<String, MessageEntity> result) {
         if (result == null) {
             return;
@@ -44,7 +53,6 @@ public class ProducerCallback implements ListenableFutureCallback<SendResult<Str
         }
     }
 
-    @Override
     public void onFailure(Throwable ex) {
         ex.printStackTrace();
     }

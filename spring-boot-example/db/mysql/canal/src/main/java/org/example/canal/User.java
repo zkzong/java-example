@@ -8,7 +8,7 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 
-import javax.persistence.Column;
+import jakarta.persistence.Column;
 
 @Data
 @TableName("user_info")

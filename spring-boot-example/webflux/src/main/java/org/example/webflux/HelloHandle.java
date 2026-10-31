@@ -12,7 +12,7 @@ public class HelloHandle {
 
     public Mono<ServerResponse> hello(ServerRequest request) {
         return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON)
-                .body(BodyInserters.fromObject("Hello, This is a Spring Boot WebFlux Project!"));
+                .body(BodyInserters.fromValue("Hello, This is a Spring Boot WebFlux Project!"));
     }
 
 }

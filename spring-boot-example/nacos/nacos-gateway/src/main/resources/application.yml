@@ -9,19 +9,21 @@ spring:
       discovery:
         server-addr: 192.168.163.128:8848
     gateway:
-      routes:
-        - id: nacos-consumer
-          uri: lb://nacos-consumer
-          predicates:
-            - Path=/consumer/**
-          filters:
-            - StripPrefix=1
-        - id: nacos-provider
-          uri: lb://nacos-provider
-          predicates:
-            - Path=/provider/**
-          filters:
-            - StripPrefix=1
+      server:
+        webflux:
+          routes:
+            - id: nacos-consumer
+              uri: lb://nacos-consumer
+              predicates:
+                - Path=/consumer/**
+              filters:
+                - StripPrefix=1
+            - id: nacos-provider
+              uri: lb://nacos-provider
+              predicates:
+                - Path=/provider/**
+              filters:
+                - StripPrefix=1
         # Swagger UI 路由 - 聚合 consumer 服务的 API 文档
 #        - id: nacos-consumer-api-docs
 #          uri: lb://nacos-consumer
