@@ -53,7 +53,7 @@ public class UserServiceTest {
         // 设置id也不会更新表id
         user.setId(10L);
         user.setAge(3);
-        userService.saveOrUpdate(user, updateWrapper);
+        userService.update(user, updateWrapper);
     }
 
     /***
