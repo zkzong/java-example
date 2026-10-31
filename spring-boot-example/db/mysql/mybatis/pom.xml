@@ -12,8 +12,8 @@
     <artifactId>mybatis</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>mybatis-sb3</module>
-        <module>mybatisplus-sb3</module>
+        <module>mybatis-sb</module>
+        <module>mybatisplus-sb</module>
     </modules>
 
     <properties>
